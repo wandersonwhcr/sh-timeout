@@ -5,12 +5,11 @@ TIMEOUT_PID_TIMEOUT=""
 
 timeout() {
     TIMEOUT_SLEEP="$1"
-
-    (sleep 10; kill -TERM $$) &
+    shift 1
+    ("$@"; kill -TERM $$) &
     TIMEOUT_PID_COMMAND=$!
     (sleep "$TIMEOUT_SLEEP"; echo "Timeout."; kill -TERM $$) &
     TIMEOUT_PID_TIMEOUT=$!
-
     wait
 }
 
@@ -26,4 +25,4 @@ timeout_cleanup() {
 
 trap timeout_cleanup TERM
 
-timeout 1
+timeout "$@"
