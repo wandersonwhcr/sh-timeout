@@ -1,14 +1,27 @@
 #!/usr/bin/env sh
 
-cleanup() {
-    kill -TERM "$PIDCOMMAND" "$PIDTIMEOUT"
+TIMEOUT_PID_COMMAND=""
+TIMEOUT_PID_TIMEOUT=""
+
+timeout() {
+    (sleep 10; kill -TERM $$) &
+    TIMEOUT_PID_COMMAND=$!
+    (sleep 5; echo "Timeout."; kill -TERM $$) &
+    TIMEOUT_PID_TIMEOUT=$!
+
+    wait
 }
 
-trap cleanup TERM
+timeout_cleanup() {
+    if test ! -z "$TIMEOUT_PID_COMMAND"; then
+        kill -TERM "$TIMEOUT_PID_COMMAND"
+    fi
 
-(sleep 5; kill -TERM $$) &
-PIDCOMMAND=$!
-(sleep 10; echo "Timeout"; kill -TERM $$) &
-PIDTIMEOUT=$!
+    if test ! -z "$TIMEOUT_PID_TIMEOUT"; then
+        kill -TERM "$TIMEOUT_PID_TIMEOUT"
+    fi
+}
 
-wait
+trap timeout_cleanup TERM
+
+timeout
