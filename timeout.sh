@@ -15,11 +15,11 @@ timeout() {
 
 timeout_cleanup() {
     if test ! -z "$TIMEOUT_PID_COMMAND"; then
-        kill -TERM "$TIMEOUT_PID_COMMAND"
+        kill -TERM "$TIMEOUT_PID_COMMAND" 2>/dev/null
     fi
 
     if test ! -z "$TIMEOUT_PID_TIMEOUT"; then
-        kill -TERM "$TIMEOUT_PID_TIMEOUT"
+        kill -TERM "$TIMEOUT_PID_TIMEOUT" 2>/dev/null
     fi
 }
 
