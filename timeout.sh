@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-TIMEOUT_PID_COMMAND=""
-TIMEOUT_PID_TIMEOUT=""
-
 timeout() {
     TIMEOUT_SLEEP="$1"
     shift 1
