@@ -1,6 +1,6 @@
 # sh-timeout
 
-A POSIX sh Timeout
+A POSIX-compliant sh Timeout
 
 ## Usage
 
