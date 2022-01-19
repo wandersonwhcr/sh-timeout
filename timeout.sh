@@ -5,7 +5,7 @@ timeout() {
 
     shift 1
 
-    (sleep "$TIMEOUT_SLEEP"; echo "Timeout.") &
+    (sleep "$TIMEOUT_SLEEP"; echo "Timeout." >&2) &
     TIMEOUT_PID_TIMEOUT=$!
 
     ("$@"; kill -TERM "$TIMEOUT_PID_TIMEOUT" 2>/dev/null) &
