@@ -2,24 +2,18 @@
 
 timeout() {
     TIMEOUT_SLEEP="$1"
+
     shift 1
-    ("$@"; kill -TERM $$) &
-    TIMEOUT_PID_COMMAND=$!
-    (sleep "$TIMEOUT_SLEEP"; echo "Timeout."; kill -TERM $$) &
+
+    (sleep "$TIMEOUT_SLEEP"; echo "Timeout.") &
     TIMEOUT_PID_TIMEOUT=$!
-    wait
+
+    ("$@"; kill -TERM "$TIMEOUT_PID_TIMEOUT" 2>/dev/null) &
+    TIMEOUT_PID_COMMAND=$!
+
+    wait "$TIMEOUT_PID_TIMEOUT" 2>/dev/null
+
+    kill -TERM "$TIMEOUT_PID_COMMAND" 2>/dev/null
 }
-
-timeout_cleanup() {
-    if test ! -z "$TIMEOUT_PID_COMMAND"; then
-        kill -TERM "$TIMEOUT_PID_COMMAND" 2>/dev/null
-    fi
-
-    if test ! -z "$TIMEOUT_PID_TIMEOUT"; then
-        kill -TERM "$TIMEOUT_PID_TIMEOUT" 2>/dev/null
-    fi
-}
-
-trap timeout_cleanup TERM
 
 timeout "$@"
