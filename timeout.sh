@@ -11,6 +11,7 @@ timeout() {
     TIMEOUT_PID_COMMAND=$!
 
     wait "$TIMEOUT_PID_TIMEOUT"
+    TIMEOUT_RC_TIMEOUT="$?"
 
     timeout_cleanup "$TIMEOUT_PID_COMMAND"
 }
