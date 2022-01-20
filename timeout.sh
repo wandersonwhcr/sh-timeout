@@ -40,7 +40,9 @@ timeout_command() {
 }
 
 timeout_cleanup() {
-    ps -o pid= --ppid "$1" | xargs -r kill -TERM
+    for CHILD in $(ps -o pid= --ppid "$1"); do
+        kill -TERM "$CHILD"
+    done
 }
 
 timeout "$@"
