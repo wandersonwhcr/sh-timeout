@@ -18,8 +18,7 @@ timeout() {
     wait "$TIMEOUT_PID_COMMAND"
     TIMEOUT_RC_COMMAND="$?"
 
-    echo "TIMEOUT_RC_TIMEOUT $TIMEOUT_RC_TIMEOUT"
-    echo "TIMEOUT_RC_COMMAND $TIMEOUT_RC_COMMAND"
+    return "$TIMEOUT_RC_COMMAND"
 }
 
 timeout_sleep() {
