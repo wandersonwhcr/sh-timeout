@@ -16,7 +16,7 @@ timeout() {
 }
 
 timeout_cleanup() {
-    ps -o pid= --ppid "$1" | xargs --no-run-if-empty kill -TERM
+    ps -o pid= --ppid "$1" | xargs -r kill -TERM
 }
 
 timeout "$@"
