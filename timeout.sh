@@ -4,7 +4,7 @@ timeout() {
     TIMEOUT_SLEEP="$1"
     shift 1
 
-    (sleep "$TIMEOUT_SLEEP"; echo "Timeout.") &
+    (sleep "$TIMEOUT_SLEEP" && echo "Timeout.") &
     TIMEOUT_PID_TIMEOUT=$!
 
     ("$@"; timeout_cleanup "$TIMEOUT_PID_TIMEOUT") &
