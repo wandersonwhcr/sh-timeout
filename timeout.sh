@@ -7,7 +7,7 @@ timeout() {
     (sleep "$TIMEOUT_SLEEP" && echo "Timeout.") &
     TIMEOUT_PID_TIMEOUT=$!
 
-    timeout_execute "$@" &
+    timeout_command "$TIMEOUT_PID_TIMEOUT" "$@" &
     TIMEOUT_PID_COMMAND=$!
 
     wait "$TIMEOUT_PID_TIMEOUT"
@@ -22,15 +22,17 @@ timeout() {
     echo "TIMEOUT_RC_COMMAND $TIMEOUT_RC_COMMAND"
 }
 
-timeout_cleanup() {
-    ps -o pid= --ppid "$1" | xargs -r kill -TERM
-}
-
-timeout_execute() {
+timeout_command() {
+    TIMEOUT_PID_TIMEOUT="$1"
+    shift 1
     "$@"
     TIMEOUT_RC_COMMAND="$?"
     timeout_cleanup "$TIMEOUT_PID_TIMEOUT"
     return "$TIMEOUT_RC_COMMAND"
+}
+
+timeout_cleanup() {
+    ps -o pid= --ppid "$1" | xargs -r kill -TERM
 }
 
 timeout "$@"
