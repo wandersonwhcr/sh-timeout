@@ -23,7 +23,7 @@ timeout() {
 }
 
 timeout_sleep() {
-    sleep "$TIMEOUT_SLEEP" && (echo "Timeout." >&1)
+    sleep "$TIMEOUT_SLEEP" && (echo "Timeout." >&2)
     TIMEOUT_RC_TIMEOUT="$?"
     return "$TIMEOUT_RC_TIMEOUT"
 }
