@@ -4,7 +4,7 @@ timeout() {
     TIMEOUT_SLEEP="$1"
     shift 1
 
-    (sleep "$TIMEOUT_SLEEP" && echo "Timeout.") &
+    timeout_sleep &
     TIMEOUT_PID_TIMEOUT=$!
 
     timeout_command "$TIMEOUT_PID_TIMEOUT" "$@" &
@@ -20,6 +20,12 @@ timeout() {
 
     echo "TIMEOUT_RC_TIMEOUT $TIMEOUT_RC_TIMEOUT"
     echo "TIMEOUT_RC_COMMAND $TIMEOUT_RC_COMMAND"
+}
+
+timeout_sleep() {
+    sleep "$TIMEOUT_SLEEP" && (echo "Timeout." >&1)
+    TIMEOUT_RC_TIMEOUT="$?"
+    return "$TIMEOUT_RC_TIMEOUT"
 }
 
 timeout_command() {
