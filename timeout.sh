@@ -1,11 +1,9 @@
 #!/usr/bin/env sh
 
 timeout() {
-    TIMEOUT_SLEEP="$1"
-    shift 1
-
-    timeout_sleep &
+    timeout_sleep "$1" &
     TIMEOUT_PID_TIMEOUT=$!
+    shift 1
 
     timeout_command "$TIMEOUT_PID_TIMEOUT" "$@" &
     TIMEOUT_PID_COMMAND=$!
@@ -22,6 +20,7 @@ timeout() {
 }
 
 timeout_sleep() {
+    TIMEOUT_SLEEP="$1"
     sleep "$TIMEOUT_SLEEP" >/dev/null 2>&1
     TIMEOUT_RC_TIMEOUT="$?"
     if test "$TIMEOUT_RC_TIMEOUT" -eq 0; then
