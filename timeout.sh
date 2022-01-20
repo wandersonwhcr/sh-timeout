@@ -22,8 +22,11 @@ timeout() {
 }
 
 timeout_sleep() {
-    sleep "$TIMEOUT_SLEEP" && (echo "Timeout." >&2)
+    sleep "$TIMEOUT_SLEEP" >/dev/null 2>&1
     TIMEOUT_RC_TIMEOUT="$?"
+    if test "$TIMEOUT_RC_TIMEOUT" -eq 0; then
+        echo "Timeout." >&1
+    fi
     return "$TIMEOUT_RC_TIMEOUT"
 }
 
